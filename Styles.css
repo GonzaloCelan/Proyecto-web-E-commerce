@@ -47,6 +47,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    padding: 0.5rem;
 }
 
 .img-container img {
@@ -59,18 +60,57 @@
     margin-bottom: 1.5rem;
 }
 
-/* Botones con hover */
+/* Botones de las cards*/
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    height: 100%; 
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+}
+
+.card-body .buttons-top {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.card-body .buttons-bottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
 .card .btn {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .card .btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    filter: brightness(0.9);
+}
+
+.btn-cart {
+    background-color: #6c9ecf !important; 
+    border-color: #6c9ecf !important;
+    color: white;
+}
+
+#products-container {
+    margin-top: 2rem; 
+    gap: 2rem;
 }
 
 
-/* Layout para pantallas muy pequeñas (<350px) */
+/* Cambios en pantallas pequeñas*/
 @media (max-width: 600px) {
     .navbar-content {
         flex-direction: column;
