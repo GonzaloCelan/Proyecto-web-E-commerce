@@ -1,22 +1,22 @@
 // Fetch
-const productsContainer = document.getElementById('products-container');
-fetch('https://fakestoreapi.com/products')
-    .then(res => res.json())
-    .then(products => {
-        products.forEach(product => {
-            const card = createProductCard(product);
-            productsContainer.appendChild(card);
-        });
-    })
-    .catch(err => console.error(err));
+const productsContainer = document.getElementById("products-container");
+let allProducts = []; // Guardar los productos para habilitar el filtro.
+
+fetch("https://fakestoreapi.com/products")
+  .then((res) => res.json())
+  .then((products) => {
+    allProducts = products;
+    renderProducts(products);
+  })
+  .catch((err) => console.error(err));
 
 // Tarjetas de producto
 function createProductCard(product) {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.width = '18rem';
+  const card = document.createElement("div");
+  card.className = "card";
+  card.style.width = "18rem";
 
-    card.innerHTML = `
+  card.innerHTML = `
         <div class="img-container">
             <img src="${product.image}" class="card-img-top" alt="${product.title}">
         </div>
@@ -36,7 +36,41 @@ function createProductCard(product) {
         </div>
     `;
 
-    return card;
+  return card;
 }
 
+// Función para mostrar productos
+function renderProducts(products) {
+  productsContainer.innerHTML = "";
 
+  if (products.length === 0) {
+    // Mostrar un mensaje informativo avisando que no hay productos
+    const noResultsMessage = document.createElement("div");
+    noResultsMessage.className = "no-results-message";
+    noResultsMessage.textContent =
+      "No se encontraron productos con el nombre ingresado";
+    productsContainer.appendChild(noResultsMessage);
+  } else {
+    products.forEach((product) => {
+      const card = createProductCard(product);
+      productsContainer.appendChild(card);
+    });
+  }
+}
+
+// Filtrar
+const searchInput = document.getElementById("search-input");
+searchInput.addEventListener("input", (e) => {
+  const searchQuery = e.target.value.toLowerCase().trim();
+
+  if (searchQuery === "") {
+    // Si no hay búsqueda, se muestran todos los productos.
+    renderProducts(allProducts);
+  } else {
+    // filtrar productos, case-insensitive
+    const filteredProducts = allProducts.filter((product) =>
+      product.title.toLowerCase().includes(searchQuery),
+    );
+    renderProducts(filteredProducts);
+  }
+});
