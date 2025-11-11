@@ -18,7 +18,7 @@ function createProductCard(product) {
 
   card.innerHTML = `
         <div class="img-container">
-            <img src="${product.image}" class="card-img-top" alt="${product.title}">
+            <img src="${product.image}" class="card-img-top product-image-clickable" alt="${product.title}">
         </div>
         <div class="card-body">
             <h5 class="card-title">${product.title}</h5>
@@ -35,6 +35,12 @@ function createProductCard(product) {
             </div>
         </div>
     `;
+
+  // La imágen de cada producto abre el modal
+  const productImage = card.querySelector(".product-image-clickable");
+  productImage.addEventListener("click", () => {
+    openProductModal(product);
+  });
 
   return card;
 }
@@ -72,5 +78,29 @@ searchInput.addEventListener("input", (e) => {
       product.title.toLowerCase().includes(searchQuery),
     );
     renderProducts(filteredProducts);
+  }
+});
+
+const productModal = new bootstrap.Modal(
+  document.getElementById("product-detail-modal"),
+);
+
+function openProductModal(product) {
+  document.getElementById("modal-product-image").src = product.image;
+  document.getElementById("modal-product-image").alt = product.title;
+  document.getElementById("modal-product-title").textContent = product.title;
+  document.getElementById("modal-product-description").textContent =
+    product.description;
+  document.getElementById("modal-product-price").textContent =
+    product.price.toFixed(2);
+
+  // Mostrar el modal
+  productModal.show();
+}
+
+// Cerrar el modal con la tecla ESC, siguiendo buenas prácticas de UX
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    productModal.hide();
   }
 });
