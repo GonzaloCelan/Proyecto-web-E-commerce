@@ -53,23 +53,29 @@ export function renderCartItems() {
     total += subtotal;
 
     item.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-start">
+      <img
+        src="${product.image}"
+        alt="${product.title}"
+        class="img-thumbnail me-3"
+        style="width: 80px; height: 80px; object-fit: contain;"
+      />
       <div>
         <h6 class="mb-1">${product.title}</h6>
         <div class="d-flex align-items-center gap-2">
           <button id="menos-${product.id}" class="btn btn-sm btn-outline-secondary" data-action="dec">-</button>
-          <span id="cantidad-${product.id}" class="px-2" data-role="qty" ">${product.quantity}</span>
+          <span id="cantidad-${product.id}" class="px-2" data-role="qty">${product.quantity}</span>
           <button id="mas-${product.id}" class="btn btn-sm btn-outline-secondary" data-action="inc">+</button>
+          <button class="btn btn-sm btn-outline-danger" data-action="remove" id="btn-remove-product-${product.id}">
+            <i class="bi bi-trash"></i>
+          </button>
         </div>
         <strong class="text-primary d-block mt-1">Total: $${subtotal.toFixed(2)}</strong>
       </div>
-      <div class="d-flex flex-column gap-1">
-        <button class="btn btn-sm btn-outline-danger" data-action="remove" id="btn-remove-product-${product.id}">
-          <i class="bi bi-trash"></i>
-        </button>
-      </div>
     </div>
-  `;
+  </div>
+`;
 
     cartItemsContainer.appendChild(item);
 

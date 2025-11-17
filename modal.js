@@ -2,6 +2,7 @@ import {getFromLocalStorage, saveLocalStorage,updateLocalStorage,removeLocalStor
 import{renderCartItems} from "./carrito.js";
 
 
+// Funcion para actualizar la cantidad de productos 
 export function quantityProduct () {
 
   let cantidad = 1;
@@ -23,6 +24,8 @@ export function quantityProduct () {
   };
 
 }
+
+// Funcion para agregar productos al carrito
 
 export function addProductCart (product){
 
@@ -46,6 +49,7 @@ export function addProductCart (product){
         product.quantity = parseInt(qtyProduct.textContent);
         updateCart.push(product);
         updateLocalStorage(updateCart);
+        renderCartItems(); 
         Swal.fire ({
             title: "¡Producto actualizado!",
             icon: "success"
@@ -54,6 +58,7 @@ export function addProductCart (product){
     })
 }
 
+// Funcion para eliminar productos del carrito
 export function removeProductCart (product){
 
     const btnRemoveProduct = document.getElementById("btn-remove-cart");

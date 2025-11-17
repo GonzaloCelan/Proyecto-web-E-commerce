@@ -124,5 +124,6 @@ document.addEventListener("keydown", (e) => {
 
 
 // Renderiza los productos y despues setea el localStorage del carrito
+renderCartItems();
 initialLocalStorage();
 loadProducts();
