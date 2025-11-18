@@ -37,10 +37,5 @@ export function updateLocalStorage(products){
 
 // funcion para limpiar el carrito 
 export function removeLocalStorage() {
-  if (localStorage.getItem(STORAGE_KEY)) {
-    localStorage.clear();
-    localStorage.setItem(STORAGE_KEY,JSON.stringify([]))
-  } else {
-    console.warn(`La clave "${STORAGE_KEY}" no existe en localStorage`);
-  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([])); 
 }
