@@ -1,4 +1,4 @@
-import {removeLocalStorage,getFromLocalStorage,updateLocalStorage} from "./storage.js";
+import {removeLocalStorage,getFromLocalStorage,updateLocalStorage,saveLocalStorage} from "./storage.js";
 
 const cartIcon = document.getElementById("cart-icon");
 const cartSidebar = document.getElementById("cart-sidebar");
@@ -96,6 +96,57 @@ function removeProductCartById(productId) {
   const updatedCart = cart.filter(product => product.id !== productId);
   updateLocalStorage(updatedCart);
   renderCartItems();
+}
+
+// Funcion para agregar productos al carrito
+
+export function addProductCart(product) {
+  const btnAddProduct = document.getElementById("btn-add-cart-modal");
+  const qtyProduct   = document.getElementById("producto-cantidad-modal");
+
+  // Para evitar múltiples listeners si abrís el modal varias veces:
+  btnAddProduct.onclick = () => {
+    const cart = getFromLocalStorage(); // siempre un array
+
+    // cantidad elegida en el modal
+    const newQty = parseInt(
+      qtyProduct.value ?? qtyProduct.textContent,
+      10
+    ) || 1;
+
+    const index = cart.findIndex(p => p.id === product.id);
+
+    if (index === -1) {
+      // NO existe en el carrito → lo agrego
+      const productToSave = {
+        ...product,
+        quantity: newQty
+      };
+
+      cart.push(productToSave);
+      updateLocalStorage(cart);   // o saveLocalStorage(productToSave);
+
+      renderCartItems();
+      Swal.fire({
+        title: "¡Producto añadido!",
+        icon: "success"
+      });
+
+    } else {
+      // YA existe → solo actualizo su cantidad
+      cart[index] = {
+        ...cart[index],
+        quantity: newQty
+      };
+
+      updateLocalStorage(cart);
+      renderCartItems();
+      Swal.fire({
+        title: "¡Producto actualizado!",
+        icon: "success"
+      });
+    }
+  };
 }
 
 
