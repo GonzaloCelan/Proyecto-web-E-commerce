@@ -84,6 +84,28 @@ export function renderCartItems() {
       removeProductCartById(product.id);
     });
 
+    // funcionalidad de los botones de cantidad dentro del carrito
+    const btnMas = document.getElementById(`mas-${product.id}`);
+    const btnMenos = document.getElementById(`menos-${product.id}`);
+    const qtyProduct = document.getElementById(`cantidad-${product.id}`);
+    let cantidad = product.quantity;
+
+    btnMas.onclick = () => {
+    cantidad++;
+    qtyProduct.textContent = cantidad;
+    updateProductQuantity(product, cantidad);
+  };
+
+    btnMenos.onclick = () => {
+    if (cantidad > 1) {
+      cantidad--;
+      qtyProduct.textContent = cantidad;
+      updateProductQuantity(product, cantidad);
+    }
+  };
+
+
+
   });
 
   cartTotal.textContent = `$${total.toFixed(2)}`;
@@ -98,5 +120,17 @@ function removeProductCartById(productId) {
   renderCartItems();
 }
 
+function updateProductQuantity(product, newQty) {
+      const cart = getFromLocalStorage();
+      const index = cart.findIndex(p => p.id === product.id);
 
+      const productUpdated = {
+        ...product,
+        quantity: newQty
+      };
+      cart[index] = productUpdated;
+
+      updateLocalStorage(cart);
+      renderCartItems();
+}
 
