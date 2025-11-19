@@ -111,7 +111,7 @@ export function renderCartItems() {
   cartTotal.textContent = `$${total.toFixed(2)}`;
 }
 
-// elimina un producto del carrito por su ID
+
 
 function removeProductCartById(productId) {
   const cart = getFromLocalStorage();
