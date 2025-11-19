@@ -1,10 +1,10 @@
 
 // Importaciones de funciones
-import  {initialLocalStorage, saveLocalStorage, getFromLocalStorage} from "./storage.js";
+import  {initialLocalStorage} from "./storage.js";
 import { getProducts } from "./api.js"; 
 import {quantityProduct } from "./modal.js";
-import {renderCartItems} from "./carrito.js";
-import { addProductCart } from "./carrito.js";
+import {renderCartItems } from "./carrito.js";
+import { addProductCart } from "./modal.js";
 
 // Fetch
 
@@ -124,6 +124,9 @@ document.addEventListener("keydown", (e) => {
 
 
 // Renderiza los productos y despues inicializa el localStorage del carrito
-renderCartItems();
-initialLocalStorage();
-loadProducts();
+document.addEventListener("DOMContentLoaded", () => {
+  loadProducts();
+  initialLocalStorage();
+  renderCartItems();
+ 
+});
