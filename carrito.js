@@ -109,6 +109,16 @@ export function renderCartItems() {
   });
 
   cartTotal.textContent = `$${total.toFixed(2)}`;
+
+  // Si el carrito no tiene productos, el botón de finalizar compra no debería funcionar
+  // Si el carrito no tiene productos, el botón de eliminar productos no debería funcionar
+  if (cart.length === 0) {
+    btnCheckoutCart.disabled = true;
+    btnRemoveCart.disabled = true;
+  } else {
+    btnCheckoutCart.disabled = false;
+    btnRemoveCart.disabled = false;
+  }
 }
 
 
