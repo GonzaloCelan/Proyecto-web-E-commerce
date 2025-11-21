@@ -26,15 +26,38 @@ btnRemoveCart.addEventListener("click", () => {
 
 // confirma el pedido y limpia el carrito
 btnCheckoutCart.addEventListener("click", () => {
-removeLocalStorage();
-renderCartItems();
- Swal.fire({
-    title: "¡Gracias por su compra!",
-    text: "Tu pedido ha sido procesado con éxito.",
-    icon: "success",
-    confirmButtonText: "Aceptar"
+  const cart = getFromLocalStorage();
+  if (cart.length === 0) return;
+
+  let detalle = "";
+  let total = 0;
+  cart.forEach(product => {
+    const subtotal = product.price * product.quantity;
+    total += subtotal;
+    detalle += `${product.title} x${product.quantity} = $${subtotal.toFixed(2)}\n`;
   });
-})
+  detalle += `\nTotal: $${total.toFixed(2)}`;
+
+  Swal.fire({
+    title: "Confirma tu compra",
+    icon: "question",
+    html: `<pre style="text-align:left">${detalle}</pre>`,
+    showCancelButton: true,
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) {
+      removeLocalStorage();
+      renderCartItems();
+      Swal.fire({
+        title: "¡Gracias por su compra!",
+        text: "Tu pedido ha sido procesado con éxito.",
+        icon: "success",
+        confirmButtonText: "Aceptar"
+      });
+    }
+  });
+});
 
 // renderiza los productos del carrito almacenados en el local storage
 export function renderCartItems() {

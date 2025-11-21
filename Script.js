@@ -38,7 +38,7 @@ function createProductCard(product) {
             <p class="card-text"><strong>Categoria:</strong> ${product.category}</p>
             <div class="buttons-top">
                 <button class="btn btn-primary btn-buy">Comprar ahora</button>
-                <button id="btn-add-product-${product.id}" class="btn btn-primary btn-cart" title="Agregar al carrito"">
+                <button id="btn-add-product-${product.id}" class="btn btn-primary btn-cart" title="Agregar al carrito">
                     <i class="bi bi-cart-plus-fill"></i>
                 </button>
                 <button class="btn btn-danger btn-fav" title="Favoritos">
@@ -47,16 +47,19 @@ function createProductCard(product) {
             </div>
         </div>
     `;
- 
+
   const btnFav = card.querySelector(".btn-fav");
   const favoritos = getFavoritos();
   if (favoritos.some(p => p.id === product.id)) {
     btnFav.classList.add("text-danger");
-  } else {
-    btnFav.classList.remove("text-danger");
   }
 
-  // La imágen de cada producto abre el modal
+  btnFav.addEventListener("click", () => {
+    const added = toggleFavorito(product);
+    btnFav.classList.toggle("fav-active", added);
+    renderFavoritesBadge();
+  });
+
   const productImage = card.querySelector(".product-image-clickable");
   productImage.addEventListener("click", () => {
     openProductModal(product);
@@ -64,22 +67,41 @@ function createProductCard(product) {
     addProductCart(product);
   });
 
-  // El botón del carrito en la tarjeta agrega +1 del producto
   const btnAddCart = card.querySelector(`#btn-add-product-${product.id}`);
-  btnAddCart.addEventListener("click", () => {
-    addProductToCartPlusOne(product);
-  });
+  btnAddCart.addEventListener("click", () => addProductToCartPlusOne(product));
 
-  // agrega o quita favorito
-  btnFav.addEventListener("click", () => {
-    const added = toggleFavorito(product);
-    btnFav.classList.toggle("fav-active", added);
-    renderFavoritesBadge();
-  });
-
+  // Botón “Comprar ahora”
+  const btnBuy = card.querySelector(".btn-buy");
+  btnBuy.addEventListener("click", () => buyNow(product));
 
   return card;
 }
+
+// Función para comprar ahora
+function buyNow(product) {
+  let detalle = `${product.title} x1 = $${product.price.toFixed(2)}\n`;
+  detalle += `\nTotal: $${product.price.toFixed(2)}`;
+
+  Swal.fire({
+    title: "Confirma tu compra",
+    icon: "question",
+    html: `<pre style="text-align:left">${detalle}</pre>`,
+    showCancelButton: true,
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "¡Gracias por su compra!",
+        text: "Tu pedido ha sido procesado con éxito.",
+        icon: "success",
+        confirmButtonText: "Aceptar"
+      });
+    }
+  });
+}
+
+
 
 // Función para mostrar productos
 function renderProducts(products) {
