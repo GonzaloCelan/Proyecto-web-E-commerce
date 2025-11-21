@@ -1,5 +1,6 @@
 import {getFromLocalStorage, saveLocalStorage,updateLocalStorage} from "./storage.js";
 import{renderCartItems} from "./carrito.js";
+import { productModal } from "./Script.js";
 
 
 // Funcion para elegir la cantidad de productos dentro del modal
@@ -48,8 +49,9 @@ export function addProductCart(product) {
       };
 
       cart.push(newProduct);
-      updateLocalStorage(cart); 
+      updateLocalStorage(cart);
       renderCartItems();
+      productModal.hide();
       Swal.fire({
         title: "¡Producto añadido!",
         icon: "success"
@@ -60,12 +62,13 @@ export function addProductCart(product) {
 
       const productUpdated = {
         ...productUpdate,
-        quantity: newQty
+        quantity: productUpdate.quantity + newQty
       };
       cart[index] = productUpdated;
 
       updateLocalStorage(cart);
       renderCartItems();
+      productModal.hide();
       Swal.fire({
         title: "¡Producto actualizado!",
         icon: "success"

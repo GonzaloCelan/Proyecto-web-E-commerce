@@ -169,7 +169,7 @@ searchInput.addEventListener("input", (e) => {
   }
 });
 
-const productModal = new bootstrap.Modal(
+export const productModal = new bootstrap.Modal(
   document.getElementById("product-detail-modal"),
 );
 
