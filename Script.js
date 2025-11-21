@@ -1,7 +1,7 @@
 
 // Importaciones de funciones
-import  {initialLocalStorage} from "./storage.js";
-import { getProducts } from "./api.js"; 
+import  {initialLocalStorage, getFromLocalStorage, updateLocalStorage} from "./storage.js";
+import { getProducts } from "./api.js";
 import {quantityProduct } from "./modal.js";
 import {renderCartItems } from "./carrito.js";
 import { addProductCart } from "./modal.js";
@@ -58,6 +58,12 @@ function createProductCard(product) {
     addProductCart(product);
   });
 
+  // El botón del carrito en la tarjeta agrega +1 del producto
+  const btnAddCart = card.querySelector(`#btn-add-product-${product.id}`);
+  btnAddCart.addEventListener("click", () => {
+    addProductToCartPlusOne(product);
+  });
+
   return card;
 }
 
@@ -76,6 +82,36 @@ function renderProducts(products) {
     products.forEach((product) => {
       const card = createProductCard(product);
       productsContainer.appendChild(card);
+    });
+  }
+}
+
+// Función para agregar +1 del producto al carrito desde la tarjeta
+function addProductToCartPlusOne(product) {
+  const cart = getFromLocalStorage();
+  const index = cart.findIndex(p => p.id === product.id);
+
+  if (index === -1) {
+    // Producto no existe en el carrito, agregarlo con cantidad 1
+    const newProduct = {
+      ...product,
+      quantity: 1
+    };
+    cart.push(newProduct);
+    updateLocalStorage(cart);
+    renderCartItems();
+    Swal.fire({
+      title: "¡Producto añadido!",
+      icon: "success"
+    });
+  } else {
+    // Producto ya existe, incrementar cantidad en 1
+    cart[index].quantity += 1;
+    updateLocalStorage(cart);
+    renderCartItems();
+    Swal.fire({
+      title: "¡Producto actualizado!",
+      icon: "success"
     });
   }
 }
