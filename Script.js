@@ -4,6 +4,7 @@ import { getProducts } from "./api.js";
 import {quantityProduct } from "./modal.js";
 import {renderCartItems } from "./carrito.js";
 import { addProductCart } from "./modal.js";
+import { initialFavoritos, getFavoritos, toggleFavorito } from "./favoritos.js";
 
 // Fetch
 const productsContainer = document.getElementById("products-container");
@@ -47,6 +48,14 @@ function createProductCard(product) {
         </div>
     `;
  
+  const btnFav = card.querySelector(".btn-fav");
+  const favoritos = getFavoritos();
+  if (favoritos.some(p => p.id === product.id)) {
+    btnFav.classList.add("text-danger");
+  } else {
+    btnFav.classList.remove("text-danger");
+  }
+
   // La imágen de cada producto abre el modal
   const productImage = card.querySelector(".product-image-clickable");
   productImage.addEventListener("click", () => {
@@ -60,6 +69,14 @@ function createProductCard(product) {
   btnAddCart.addEventListener("click", () => {
     addProductToCartPlusOne(product);
   });
+
+  // agrega o quita favorito
+  btnFav.addEventListener("click", () => {
+    const added = toggleFavorito(product);
+    btnFav.classList.toggle("fav-active", added);
+    renderFavoritesBadge();
+  });
+
 
   return card;
 }
@@ -207,12 +224,117 @@ document.addEventListener("click", (e) => {
     }
 });
 
+function renderFavoritesBadge() {
+  const favBadge = document.getElementById("fav-badge");
+  const count = getFavoritos().length;
+
+  if (count > 0) {
+    favBadge.textContent = count;
+    favBadge.style.display = "block";
+  } else {
+    favBadge.style.display = "none";
+  }
+}
+
+function syncFavoriteButtons() {
+  const cards = document.querySelectorAll(".card");
+  const favoritos = getFavoritos();
+
+  cards.forEach(card => {
+    const btnFav = card.querySelector(".btn-fav");
+    const productId = Number(card.querySelector(".btn-cart").id.replace("btn-add-product-", ""));
+
+    if (favoritos.some(p => p.id === productId)) {
+      btnFav.classList.add("fav-active");
+    } else {
+      btnFav.classList.remove("fav-active");
+    }
+  });
+}
+
+
+
+const favIcon = document.querySelector(".bi-bookmark-fill");
+const favSidebar = document.getElementById("fav-sidebar");
+const favOverlay = document.getElementById("fav-overlay");
+const favItemsContainer = document.getElementById("fav-items");
+const btnClearFav = document.getElementById("btn-clear-fav");
+
+// Abrir sidebar de favoritos
+favIcon.addEventListener("click", () => {
+    favSidebar.style.transform = "translateX(0)";
+    favOverlay.style.display = "block";
+    renderFavItems();
+});
+
+// Cerrar sidebar al hacer clic fuera
+favOverlay.addEventListener("click", () => {
+    favSidebar.style.transform = "translateX(100%)";
+    favOverlay.style.display = "none";
+});
+
+function renderFavItems() {
+    const favoritos = getFavoritos();
+    favItemsContainer.innerHTML = "";
+
+    if (favoritos.length === 0) {
+        favItemsContainer.innerHTML = `<p class="text-muted">No hay favoritos aún</p>`;
+        return;
+    }
+
+    favoritos.forEach(product => {
+        const item = document.createElement("div");
+        item.classList.add("border", "p-2", "rounded", "d-flex", "align-items-center", "gap-2");
+        item.style.cursor = "pointer";
+
+        item.innerHTML = `
+            <img src="${product.image}" alt="${product.title}" style="width: 60px; height: 60px; object-fit: contain;">
+            <div class="flex-grow-1">
+                <h6 class="mb-1">${product.title}</h6>
+                <p class="mb-0 text-primary">$${product.price.toFixed(2)}</p>
+            </div>
+            <button class="btn btn-sm btn-outline-danger" title="Quitar"><i class="bi bi-trash"></i></button>
+        `;
+
+        const btnRemove = item.querySelector("button");
+        btnRemove.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleFavorito(product);
+          renderFavoritesBadge();
+          renderFavItems();
+          syncFavoriteButtons();
+        });
+
+
+        // Abrir modal al clickear sobre el item (excepto el botón de quitar)
+        item.addEventListener("click", () => {
+            openProductModal(product);
+            quantityProduct();
+            addProductCart(product);
+        });
+
+        favItemsContainer.appendChild(item);
+    });
+}
+
+
+// Limpiar todos los favoritos
+btnClearFav.addEventListener("click", () => {
+    const favoritos = getFavoritos();
+    favoritos.forEach(p => toggleFavorito(p));
+    renderFavoritesBadge();
+    renderFavItems();
+    syncFavoriteButtons();
+});
+
+
 
 // Renderiza los productos y despues inicializa el localStorage del carrito
 document.addEventListener("DOMContentLoaded", () => {
   loadProducts();
   initialLocalStorage();
+  initialFavoritos(); 
   renderCartItems();
-  checkLogin()
+  renderFavoritesBadge();
+  checkLogin();
 });
-

@@ -39,7 +39,11 @@
 
                     <!-- Iconos -->
                     <div class="navbar-section icons-section">
-                        <i class="bi bi-bookmark-fill nav-icon" title="Favoritos"></i>
+                        
+                        <div id="fav-container" style="position: relative; display: inline-block;">
+                            <i class="bi bi-bookmark-fill nav-icon" title="Favoritos"></i>
+                            <span id="fav-badge" class="badge bg-danger">0</span>
+                        </div>
 
                         <div style="position: relative; display: inline-block;">
                             <i id="cart-icon" class="bi bi-cart-fill nav-icon" title="Carrito"></i>
@@ -174,6 +178,16 @@
     <button class="btn btn-danger w-100 mt-3" id="btn-remove-cart">Eliminar productos</button>
 </div>
 
+<!-- Sidebar de favoritos -->
+<div id="fav-sidebar" class="cart-sidebar bg-white border-start shadow position-fixed top-0 end-0 h-100 p-3" style="width: 320px; z-index: 1050; transform: translateX(100%); transition: transform 0.3s ease;">
+    <h5 class="mb-4">💖 Favoritos</h5>
+    <div id="fav-items" class="d-flex flex-column gap-3"></div>
+    <hr />
+    <button class="btn btn-danger w-100 mt-3" id="btn-clear-fav">Eliminar todos</button>
+</div>
+
+<div id="fav-overlay" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50" style="z-index: 1040; display: none;"></div>
+
 
 <div id="cart-overlay" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50" style="z-index: 1040; display: none;"></div>
 
@@ -183,6 +197,3 @@
         <script type="module" src="Script.js"></script>
     </body>
 </html>
-
-
-

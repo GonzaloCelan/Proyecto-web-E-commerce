@@ -42,6 +42,43 @@
     font-size: 1.5rem;
 }
 
+#fav-container {
+    position: relative;
+    display: inline-block;
+}
+
+#fav-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 0.7rem;
+    display: none;
+}
+
+.btn-fav {
+    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: #dc3545; /* rojo original btn-danger */
+}
+
+.btn-fav i {
+    color: white; /* color del corazón por defecto */
+    transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.btn-fav.fav-active {
+    background-color: #ff6b6b; /* rojo más claro al estar activo */
+}
+
+.btn-fav.fav-active i {
+    color: red; /* corazón rojo */
+    text-shadow: 0 0 3px #fff; /* borde/sombra sutil */
+    transform: scale(1.1); /* pequeño “pop” al activar */
+}
+
+#fav-sidebar h5 {
+    color: #dc3545; /* rojo para favoritos */
+}
+
 /* Contenedor de la imagen */
 .img-container {
     width: 100%;
