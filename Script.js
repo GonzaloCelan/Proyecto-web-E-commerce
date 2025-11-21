@@ -226,11 +226,16 @@ function checkLogin() {
 btnLogin.addEventListener("click", () => {
     const username = usernameInput.value.trim();
     if (username) {
+        if (username.length > 50) {
+            alert('El nombre de usuario no puede exceder los 50 caracteres.');
+            return;
+        }
         localStorage.setItem("username", username);
         usernameInput.value = "";
         checkLogin();
     }
 });
+
 
 // Cerrar sesión
 btnLogout.addEventListener("click", () => {
