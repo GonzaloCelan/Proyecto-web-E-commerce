@@ -119,6 +119,17 @@ export function renderCartItems() {
     btnCheckoutCart.disabled = false;
     btnRemoveCart.disabled = false;
   }
+
+  // Actualizar el badge del carrito en el navbar
+  const cartBadge = document.getElementById("cart-badge");
+  const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
+
+  if (totalItems > 0) {
+    cartBadge.textContent = totalItems;
+    cartBadge.style.display = "block";
+  } else {
+    cartBadge.style.display = "none";
+  }
 }
 
 
