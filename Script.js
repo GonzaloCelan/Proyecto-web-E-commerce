@@ -1,4 +1,3 @@
-
 // Importaciones de funciones
 import  {initialLocalStorage, getFromLocalStorage, updateLocalStorage} from "./storage.js";
 import { getProducts } from "./api.js";
@@ -7,8 +6,6 @@ import {renderCartItems } from "./carrito.js";
 import { addProductCart } from "./modal.js";
 
 // Fetch
-
-
 const productsContainer = document.getElementById("products-container");
 
 
@@ -158,11 +155,64 @@ document.addEventListener("keydown", (e) => {
 
 });
 
+const profileIcon = document.querySelector(".bi-person-circle");
+const profileMenu = document.getElementById("profile-menu");
+const profileForm = document.getElementById("profile-form");
+const profileWelcome = document.getElementById("profile-welcome");
+const usernameInput = document.getElementById("username-input");
+const btnLogin = document.getElementById("btn-login");
+const btnLogout = document.getElementById("btn-logout");
+const welcomeMessage = document.getElementById("welcome-message");
+
+// Mostrar menu de perfil
+profileIcon.addEventListener("click", () => {
+    profileMenu.style.display = profileMenu.style.display === "none" ? "block" : "none";
+    checkLogin();
+});
+
+// Función para chequear si ya hay usuario en localStorage
+function checkLogin() {
+    const username = localStorage.getItem("username");
+    if (username) {
+        profileForm.style.display = "none";
+        profileWelcome.style.display = "block";
+        welcomeMessage.textContent = `Bienvenido, ${username}`;
+    } else {
+        profileForm.style.display = "block";
+        profileWelcome.style.display = "none";
+    }
+}
+
+// Ingresar nombre
+btnLogin.addEventListener("click", () => {
+    const username = usernameInput.value.trim();
+    if (username) {
+        localStorage.setItem("username", username);
+        usernameInput.value = "";
+        checkLogin();
+    }
+});
+
+// Cerrar sesión
+btnLogout.addEventListener("click", () => {
+    localStorage.removeItem("username");
+    checkLogin();
+});
+
+// Cerrar perfil al hacer clic fuera
+document.addEventListener("click", (e) => {
+    const isClickInsideProfile = profileMenu.contains(e.target) || profileIcon.contains(e.target);
+    if (!isClickInsideProfile) {
+        profileMenu.style.display = "none";
+    }
+});
+
 
 // Renderiza los productos y despues inicializa el localStorage del carrito
 document.addEventListener("DOMContentLoaded", () => {
   loadProducts();
   initialLocalStorage();
   renderCartItems();
- 
+  checkLogin()
 });
+

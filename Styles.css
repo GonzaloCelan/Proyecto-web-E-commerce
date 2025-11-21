@@ -104,17 +104,18 @@
     margin-top: 0.5rem;
 }
 
-.card .btn {
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;
-}
-
-.card .btn:hover {
+.btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     filter: brightness(0.9);
+    transition: transform 0.25s ease;
+}
+
+.btn:active {
+    transform: scale(0.95);
+    filter: brightness(0.85);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
 }
 
 .btn-cart {
@@ -126,6 +127,20 @@
 #products-container {
     margin-top: 2rem;
     gap: 2rem;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    z-index: 1060;
+    display: none;
 }
 
 /* No se encontraron productos */
