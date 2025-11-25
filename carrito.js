@@ -113,10 +113,19 @@ export function renderCartItems() {
     const qtyProduct = document.getElementById(`cantidad-${product.id}`);
     let cantidad = product.quantity;
 
+    // Función para actualizar el estado del botón menos
+    const updateButtonStates = () => {
+      btnMenos.disabled = cantidad === 1;
+    };
+
+    // Actualizar estado inicial
+    updateButtonStates();
+
     btnMas.onclick = () => {
     cantidad++;
     qtyProduct.textContent = cantidad;
     updateProductQuantity(product, cantidad);
+    updateButtonStates();
   };
 
     btnMenos.onclick = () => {
@@ -124,6 +133,7 @@ export function renderCartItems() {
       cantidad--;
       qtyProduct.textContent = cantidad;
       updateProductQuantity(product, cantidad);
+      updateButtonStates();
     }
   };
 
