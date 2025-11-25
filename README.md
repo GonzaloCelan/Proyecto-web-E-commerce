@@ -150,23 +150,30 @@ El proyecto integra datos desde la API pública **FakeStore API** y utiliza **Lo
 ```
 Proyecto-web-E-commerce/
 │
-├── Index.html          # Punto de entrada - Estructura HTML principal
-├── Styles.css          # Estilos personalizados y responsive
-├── Script.js           # Lógica principal, renderizado y coordinación
-├── carrito.js          # Funcionalidad del carrito de compras
-├── favoritos.js        # Sistema de favoritos/wishlist
-├── api.js              # Integración con FakeStore API
-├── storage.js          # Utilidades de gestión de localStorage
-├── modal.js            # Funcionalidad del modal de productos
-├── README.txt          # Información básica del equipo
-└── README.md           # Este archivo
+├── Index.html                    # Punto de entrada - Estructura HTML principal
+├── index.js                      # Lógica principal, renderizado y coordinación
+├── README.md                     # Este archivo
+│
+├── estilos/
+│   └── Styles.css               # Estilos personalizados y responsive design
+│
+├── api/
+│   └── api.js                   # Integración con FakeStore API
+│
+├── componentes/
+│   ├── carrito.js               # Funcionalidad del carrito de compras
+│   ├── favoritos.js             # Sistema de favoritos/wishlist
+│   └── modal.js                 # Funcionalidad del modal de productos
+│
+└── storage/
+    └── storage.js               # Utilidades de gestión de localStorage
 ```
 
 ### Arquitectura Modular
 
 El proyecto sigue una arquitectura basada en **ES6 Modules** con separación clara de responsabilidades:
 
-- **Script.js** - Módulo central que coordina todos los demás
+- **index.js** - Módulo central que coordina todos los demás
 - **api.js** - Capa de comunicación con API externa
 - **storage.js** - Capa de persistencia con LocalStorage
 - **carrito.js** - Lógica de negocio del carrito
