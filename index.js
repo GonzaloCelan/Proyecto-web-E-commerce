@@ -1,10 +1,10 @@
 // Importaciones de funciones
-import  {initialLocalStorage, getFromLocalStorage, updateLocalStorage} from "./storage.js";
-import { getProducts } from "./api.js";
-import {quantityProduct } from "./modal.js";
-import {renderCartItems } from "./carrito.js";
-import { addProductCart } from "./modal.js";
-import { initialFavoritos, getFavoritos, toggleFavorito } from "./favoritos.js";
+import  {initialLocalStorage, getFromLocalStorage, updateLocalStorage} from "./storage/storage.js";
+import { getProducts } from "./api/api.js";
+import {quantityProduct } from "./componentes/modal.js";
+import {renderCartItems } from "./componentes/carrito.js";
+import { addProductCart } from "./componentes/modal.js";
+import { initialFavoritos, getFavoritos, toggleFavorito } from "./componentes/favoritos.js";
 
 // Fetch
 const productsContainer = document.getElementById("products-container");

@@ -1,4 +1,4 @@
-import {removeLocalStorage,getFromLocalStorage,updateLocalStorage,saveLocalStorage} from "./storage.js";
+import {removeLocalStorage,getFromLocalStorage,updateLocalStorage,saveLocalStorage} from "../storage/storage.js";
 
 const cartIcon = document.getElementById("cart-icon");
 const cartSidebar = document.getElementById("cart-sidebar");

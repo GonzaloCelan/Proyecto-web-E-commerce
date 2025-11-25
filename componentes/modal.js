@@ -1,6 +1,6 @@
-import {getFromLocalStorage, saveLocalStorage,updateLocalStorage} from "./storage.js";
+import {getFromLocalStorage, saveLocalStorage,updateLocalStorage} from "../storage/storage.js";
 import{renderCartItems} from "./carrito.js";
-import { productModal } from "./index.js";
+import { productModal } from "../index.js";
 
 
 // Funcion para elegir la cantidad de productos dentro del modal
