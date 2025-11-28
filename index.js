@@ -79,6 +79,8 @@ function createProductCard(product) {
 
 // Función para comprar ahora
 function buyNow(product) {
+  addProductToCartPlusOne(product, false);
+  // Preparar detalle de compra
   let detalle = `${product.title} x1 = $${product.price.toFixed(2)}\n`;
   detalle += `\nTotal: $${product.price.toFixed(2)}`;
 
@@ -91,6 +93,10 @@ function buyNow(product) {
     cancelButtonText: "Cancelar"
   }).then(result => {
     if (result.isConfirmed) {
+      const cartAfter = getFromLocalStorage().filter(p => p.id !== product.id);
+      updateLocalStorage(cartAfter);
+      renderCartItems();
+
       Swal.fire({
         title: "¡Gracias por su compra!",
         text: "Tu pedido ha sido procesado con éxito.",
@@ -99,7 +105,7 @@ function buyNow(product) {
       });
     }
   });
-}
+} //Ahora se agrega al carrito, de aceptar la compra directamente solo se saca ese producto.
 
 
 
@@ -123,34 +129,27 @@ function renderProducts(products) {
 }
 
 // Función para agregar +1 del producto al carrito desde la tarjeta
-function addProductToCartPlusOne(product) {
+function addProductToCartPlusOne(product, showAlert = true) {
   const cart = getFromLocalStorage();
   const index = cart.findIndex(p => p.id === product.id);
 
   if (index === -1) {
-    // Producto no existe en el carrito, agregarlo con cantidad 1
-    const newProduct = {
-      ...product,
-      quantity: 1
-    };
-    cart.push(newProduct);
-    updateLocalStorage(cart);
-    renderCartItems();
-    Swal.fire({
-      title: "¡Producto añadido!",
-      icon: "success"
-    });
+    cart.push({ ...product, quantity: 1 });
   } else {
-    // Producto ya existe, incrementar cantidad en 1
     cart[index].quantity += 1;
-    updateLocalStorage(cart);
-    renderCartItems();
+  }
+
+  updateLocalStorage(cart);
+  renderCartItems();
+
+  if (showAlert) {
     Swal.fire({
-      title: "¡Producto actualizado!",
+      title: index === -1 ? "¡Producto añadido!" : "¡Producto actualizado!",
       icon: "success"
     });
   }
 }
+
 
 // Filtrar
 const searchInput = document.getElementById("search-input");
